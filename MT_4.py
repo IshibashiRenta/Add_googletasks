@@ -10,15 +10,13 @@ from googleapiclient.discovery import build
 SCOPES = ['https://www.googleapis.com/auth/tasks']
 
 def authenticate():
-    """Google APIへの認証を行います"""
     flow = InstalledAppFlow.from_client_secrets_file(
-        'C:/Users/bxuhe/OneDrive/デスクトップ/mywork_programing/client_secret_658272432022-fh4e1c2gr330omjss4t61e1fvgd1g10d.apps.googleusercontent.com.json'
+        '.json'
         ,SCOPES)
     creds = flow.run_local_server(port=0)
     return creds
 
 def add_tasks(creds, task_list_name, tasks):
-    """タスクをGoogle Tasksに追加します"""
     service = build('tasks', 'v1', credentials=creds)
 
     # タスクリストを取得または作成
@@ -37,7 +35,6 @@ def add_tasks(creds, task_list_name, tasks):
         service.tasks().insert(tasklist=task_list_id, body={"title": task}).execute()
 
 def process_tasks_from_file(file_path):
-    """ファイルからリスト名とタスクを処理します"""
     task_data = []
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
@@ -55,7 +52,6 @@ def process_tasks_from_file(file_path):
     return task_data
 
 def execute_task(file_path):
-    """指定されたタスクリストファイルを処理"""
     try:
         credentials = authenticate()
         tasks_data = process_tasks_from_file(file_path)
@@ -66,7 +62,6 @@ def execute_task(file_path):
         messagebox.showerror("エラー", f"タスク処理中にエラーが発生しました: {e}")
 
 def create_gui():
-    """GUIを作成"""
     root = tk.Tk()
     root.title("Google Tasks 自動追加")
     root.geometry("400x300")
